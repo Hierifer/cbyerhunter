@@ -1,0 +1,3 @@
+[submodule "hex-engine"]
+	path = hex-engine
+	url = https://github.com/hierifer/hex-engine
