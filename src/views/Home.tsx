@@ -36,16 +36,23 @@ const Home = () => {
     }
   }
 
+  function onRender(id: string, phase: string, actualDuration: number, baseDuration: number, startTime: number, commitTime: number) {
+    console.log(id, phase, actualDuration, baseDuration, startTime, commitTime);
+  }
+
   return (
     <React.Fragment>
-      <div className="absolute h-full">
-        <div className="absolute bottom-0">
-          <Button type="primary"  onClick={() => { setDebugMode(!debugMode) }} > Debug {debugMode? 'ON' : 'OFF'}</Button>
+      <React.Profiler id="homepage" onRender={onRender}>
+        <div className="absolute h-full">
+          <div className="absolute bottom-0">
+            <Button type="primary"  onClick={() => { setDebugMode(!debugMode) }} > Debug {debugMode? 'ON' : 'OFF'}</Button>
+          </div>
+          <DebugPanel />
         </div>
-        <DebugPanel />
-      </div>
-      <main id='ggTarget'>
-      </main>
+        <main id='ggTarget'>
+        </main>
+      </React.Profiler>
+
     </React.Fragment>
   );
 };
