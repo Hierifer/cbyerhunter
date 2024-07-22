@@ -31,6 +31,9 @@ devDependencies:
   '@eslint/compat':
     specifier: ^1.1.0
     version: registry.npmmirror.com/@eslint/compat@1.1.0
+  '@types/node':
+    specifier: ^20.14.11
+    version: registry.npmmirror.com/@types/node@20.14.11
   '@types/react':
     specifier: ^18.0.20
     version: registry.npmmirror.com/@types/react@18.3.3
@@ -55,6 +58,9 @@ devDependencies:
   globals:
     specifier: ^15.5.0
     version: registry.npmmirror.com/globals@15.5.0
+  path:
+    specifier: ^0.12.7
+    version: registry.npmmirror.com/path@0.12.7
   postcss:
     specifier: ^8.3.6
     version: registry.npmmirror.com/postcss@8.4.38
@@ -640,6 +646,14 @@ packages:
       '@types/react': registry.npmmirror.com/@types/react@18.3.3
       hoist-non-react-statics: registry.npmmirror.com/hoist-non-react-statics@3.3.2
     dev: false
+
+  registry.npmmirror.com/@types/node@20.14.11:
+    resolution: {integrity: sha512-kprQpL8MMeszbz6ojB5/tU8PLN4kesnN8Gjzw349rDlNgsSzg90lAVj3llK99Dh7JON+t9AuscPPFW6mPbTnSA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-20.14.11.tgz}
+    name: '@types/node'
+    version: 20.14.11
+    dependencies:
+      undici-types: registry.npmmirror.com/undici-types@5.26.5
+    dev: true
 
   registry.npmmirror.com/@types/parse-json@4.0.2:
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/parse-json/-/parse-json-4.0.2.tgz}
@@ -2522,6 +2536,12 @@ packages:
       wrappy: registry.npmmirror.com/wrappy@1.0.2
     dev: true
 
+  registry.npmmirror.com/inherits@2.0.3:
+    resolution: {integrity: sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/inherits/-/inherits-2.0.3.tgz}
+    name: inherits
+    version: 2.0.3
+    dev: true
+
   registry.npmmirror.com/inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/inherits/-/inherits-2.0.4.tgz}
     name: inherits
@@ -3254,6 +3274,15 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  registry.npmmirror.com/path@0.12.7:
+    resolution: {integrity: sha512-aXXC6s+1w7otVF9UletFkFcDsJeO7lSZBPUQhtb5O0xJe8LtYhj/GxldoL09bBj9+ZmE2hNoHqQSFMN5fikh4Q==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/path/-/path-0.12.7.tgz}
+    name: path
+    version: 0.12.7
+    dependencies:
+      process: registry.npmmirror.com/process@0.11.10
+      util: registry.npmmirror.com/util@0.10.4
+    dev: true
+
   registry.npmmirror.com/picocolors@1.0.1:
     resolution: {integrity: sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/picocolors/-/picocolors-1.0.1.tgz}
     name: picocolors
@@ -3378,6 +3407,13 @@ packages:
     name: pretty-hrtime
     version: 1.0.3
     engines: {node: '>= 0.8'}
+    dev: true
+
+  registry.npmmirror.com/process@0.11.10:
+    resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/process/-/process-0.11.10.tgz}
+    name: process
+    version: 0.11.10
+    engines: {node: '>= 0.6.0'}
     dev: true
 
   registry.npmmirror.com/prop-types@15.8.1:
@@ -4153,6 +4189,12 @@ packages:
       which-boxed-primitive: registry.npmmirror.com/which-boxed-primitive@1.0.2
     dev: true
 
+  registry.npmmirror.com/undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/undici-types/-/undici-types-5.26.5.tgz}
+    name: undici-types
+    version: 5.26.5
+    dev: true
+
   registry.npmmirror.com/universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/universalify/-/universalify-2.0.1.tgz}
     name: universalify
@@ -4234,6 +4276,14 @@ packages:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/util-deprecate/-/util-deprecate-1.0.2.tgz}
     name: util-deprecate
     version: 1.0.2
+    dev: true
+
+  registry.npmmirror.com/util@0.10.4:
+    resolution: {integrity: sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/util/-/util-0.10.4.tgz}
+    name: util
+    version: 0.10.4
+    dependencies:
+      inherits: registry.npmmirror.com/inherits@2.0.3
     dev: true
 
   registry.npmmirror.com/vite@2.9.18:
