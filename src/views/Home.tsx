@@ -4,7 +4,7 @@ import Header from '../components/Header'
 import GameGenerator from '@/modules/hex-engine/render';
 import Singleton from '../../utils/singleton'
 import { Button, List } from "@arco-design/web-react";
-import "@arco-design/web-react/dist/css/arco.css";
+import "@arco-design/web-react/dist/css/arco.css"
 
 
 // singleton 不要放在渲染函数里。在组件被刷新时会被刷新
@@ -49,7 +49,7 @@ const Home = () => {
           </div>
           <DebugPanel />
         </div>
-        <main id='ggTarget'>
+        <main id='ggTarget' className="relative">
         </main>
       </React.Profiler>
 
