@@ -9,10 +9,10 @@ importers:
   .:
     dependencies:
       '@arco-design/web-react':
-        specifier: ^2.62.1
+        specifier: ^2.63.0
         version: https://registry.npmmirror.com/@arco-design/web-react/-/web-react-2.63.0.tgz(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.3.3.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.3.1.tgz(react@https://registry.npmmirror.com/react/-/react-18.3.1.tgz))(react@https://registry.npmmirror.com/react/-/react-18.3.1.tgz)
       '@reduxjs/toolkit':
-        specifier: ^1.8.1
+        specifier: ^1.9.7
         version: https://registry.npmmirror.com/@reduxjs/toolkit/-/toolkit-1.9.7.tgz(react-redux@https://registry.npmmirror.com/react-redux/-/react-redux-8.1.3.tgz(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.3.0.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.3.3.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.3.1.tgz(react@https://registry.npmmirror.com/react/-/react-18.3.1.tgz))(react@https://registry.npmmirror.com/react/-/react-18.3.1.tgz)(redux@https://registry.npmmirror.com/redux/-/redux-4.2.1.tgz))(react@https://registry.npmmirror.com/react/-/react-18.3.1.tgz)
       '@types/matter-js':
         specifier: ^0.19.7
@@ -27,20 +27,23 @@ importers:
         specifier: ^0.20.0
         version: 0.20.0
       pixi.js:
-        specifier: ^8.2.5
+        specifier: ^8.2.6
         version: 8.2.6
       react:
-        specifier: ^18.2.0
+        specifier: ^18.3.1
         version: https://registry.npmmirror.com/react/-/react-18.3.1.tgz
       react-dom:
-        specifier: ^18.2.0
+        specifier: ^18.3.1
         version: https://registry.npmmirror.com/react-dom/-/react-dom-18.3.1.tgz(react@https://registry.npmmirror.com/react/-/react-18.3.1.tgz)
       react-redux:
-        specifier: ^8.0.1
+        specifier: ^8.1.3
         version: https://registry.npmmirror.com/react-redux/-/react-redux-8.1.3.tgz(@types/react-dom@https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.3.0.tgz)(@types/react@https://registry.npmmirror.com/@types/react/-/react-18.3.3.tgz)(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.3.1.tgz(react@https://registry.npmmirror.com/react/-/react-18.3.1.tgz))(react@https://registry.npmmirror.com/react/-/react-18.3.1.tgz)(redux@https://registry.npmmirror.com/redux/-/redux-4.2.1.tgz)
       react-router-dom:
         specifier: ^6.23.1
         version: https://registry.npmmirror.com/react-router-dom/-/react-router-dom-6.23.1.tgz(react-dom@https://registry.npmmirror.com/react-dom/-/react-dom-18.3.1.tgz(react@https://registry.npmmirror.com/react/-/react-18.3.1.tgz))(react@https://registry.npmmirror.com/react/-/react-18.3.1.tgz)
+      uuid:
+        specifier: ^10.0.0
+        version: 10.0.0
     devDependencies:
       '@eslint/compat':
         specifier: ^1.1.0
@@ -49,22 +52,25 @@ importers:
         specifier: ^20.14.11
         version: https://registry.npmmirror.com/@types/node/-/node-20.14.11.tgz
       '@types/react':
-        specifier: ^18.0.20
+        specifier: ^18.3.3
         version: https://registry.npmmirror.com/@types/react/-/react-18.3.3.tgz
       '@types/react-dom':
-        specifier: ^18.0.6
+        specifier: ^18.3.0
         version: https://registry.npmmirror.com/@types/react-dom/-/react-dom-18.3.0.tgz
       '@types/react-router-dom':
         specifier: ^5.3.3
         version: https://registry.npmmirror.com/@types/react-router-dom/-/react-router-dom-5.3.3.tgz
+      '@types/uuid':
+        specifier: ^10.0.0
+        version: 10.0.0
       '@vitejs/plugin-react-refresh':
-        specifier: ^1.3.1
+        specifier: ^1.3.6
         version: https://registry.npmmirror.com/@vitejs/plugin-react-refresh/-/plugin-react-refresh-1.3.6.tgz
       autoprefixer:
-        specifier: ^10.3.3
+        specifier: ^10.4.19
         version: https://registry.npmmirror.com/autoprefixer/-/autoprefixer-10.4.19.tgz(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.38.tgz)
       eslint:
-        specifier: 9.x
+        specifier: ~9.5.0
         version: https://registry.npmmirror.com/eslint/-/eslint-9.5.0.tgz
       eslint-plugin-react:
         specifier: ^7.34.2
@@ -76,10 +82,10 @@ importers:
         specifier: ^0.12.7
         version: https://registry.npmmirror.com/path/-/path-0.12.7.tgz
       postcss:
-        specifier: ^8.3.6
+        specifier: ^8.4.38
         version: https://registry.npmmirror.com/postcss/-/postcss-8.4.38.tgz
       tailwindcss:
-        specifier: ^2.2.9
+        specifier: ^2.2.19
         version: https://registry.npmmirror.com/tailwindcss/-/tailwindcss-2.2.19.tgz(autoprefixer@https://registry.npmmirror.com/autoprefixer/-/autoprefixer-10.4.19.tgz(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.38.tgz))(postcss@https://registry.npmmirror.com/postcss/-/postcss-8.4.38.tgz)
       typescript:
         specifier: ^5.4.5
@@ -88,7 +94,7 @@ importers:
         specifier: ^7.13.0
         version: https://registry.npmmirror.com/typescript-eslint/-/typescript-eslint-7.13.0.tgz(eslint@https://registry.npmmirror.com/eslint/-/eslint-9.5.0.tgz)(typescript@https://registry.npmmirror.com/typescript/-/typescript-5.4.5.tgz)
       vite:
-        specifier: ^2.5.1
+        specifier: ^2.9.18
         version: https://registry.npmmirror.com/vite/-/vite-2.9.18.tgz
 
 packages:
@@ -405,6 +411,9 @@ packages:
   '@types/use-sync-external-store@https://registry.npmmirror.com/@types/use-sync-external-store/-/use-sync-external-store-0.0.3.tgz':
     resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==, tarball: https://registry.npmmirror.com/@types/use-sync-external-store/-/use-sync-external-store-0.0.3.tgz}
     version: 0.0.3
+
+  '@types/uuid@10.0.0':
+    resolution: {integrity: sha512-7gqG38EyHgyP1S+7+xomFtL+ZNHcKv6DwNaCZmJmo1vgMugyF3TCnXVg4t1uk89mLNwnLtnY3TpOpCOyp1/xHQ==, tarball: https://registry.npmmirror.com/@types/uuid/-/uuid-10.0.0.tgz}
 
   '@typescript-eslint/eslint-plugin@https://registry.npmmirror.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-7.13.0.tgz':
     resolution: {integrity: sha512-FX1X6AF0w8MdVFLSdqwqN/me2hyhuQg4ykN6ZpVhh1ij/80pTvDKclX1sZB9iqex8SjQfVhwMKs3JtnnMLzG9w==, tarball: https://registry.npmmirror.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-7.13.0.tgz}
@@ -2279,6 +2288,10 @@ packages:
     resolution: {integrity: sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==, tarball: https://registry.npmmirror.com/util/-/util-0.10.4.tgz}
     version: 0.10.4
 
+  uuid@10.0.0:
+    resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==, tarball: https://registry.npmmirror.com/uuid/-/uuid-10.0.0.tgz}
+    hasBin: true
+
   vite@https://registry.npmmirror.com/vite/-/vite-2.9.18.tgz:
     resolution: {integrity: sha512-sAOqI5wNM9QvSEE70W3UGMdT8cyEn0+PmJMTFvTB8wB0YbYUWw3gUbY62AOyrXosGieF2htmeLATvNxpv/zNyQ==, tarball: https://registry.npmmirror.com/vite/-/vite-2.9.18.tgz}
     version: 2.9.18
@@ -2662,6 +2675,8 @@ snapshots:
       csstype: https://registry.npmmirror.com/csstype/-/csstype-3.1.3.tgz
 
   '@types/use-sync-external-store@https://registry.npmmirror.com/@types/use-sync-external-store/-/use-sync-external-store-0.0.3.tgz': {}
+
+  '@types/uuid@10.0.0': {}
 
   '@typescript-eslint/eslint-plugin@https://registry.npmmirror.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-7.13.0.tgz(@typescript-eslint/parser@https://registry.npmmirror.com/@typescript-eslint/parser/-/parser-7.13.0.tgz(eslint@https://registry.npmmirror.com/eslint/-/eslint-9.5.0.tgz)(typescript@https://registry.npmmirror.com/typescript/-/typescript-5.4.5.tgz))(eslint@https://registry.npmmirror.com/eslint/-/eslint-9.5.0.tgz)(typescript@https://registry.npmmirror.com/typescript/-/typescript-5.4.5.tgz)':
     dependencies:
@@ -4338,6 +4353,8 @@ snapshots:
   util@https://registry.npmmirror.com/util/-/util-0.10.4.tgz:
     dependencies:
       inherits: https://registry.npmmirror.com/inherits/-/inherits-2.0.3.tgz
+
+  uuid@10.0.0: {}
 
   vite@https://registry.npmmirror.com/vite/-/vite-2.9.18.tgz:
     dependencies:
