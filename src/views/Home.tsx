@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Header from '../components/Header'
 import GameGenerator from '@/modules/hex-engine/game';
 import Singleton from '../../utils/singleton'
-import { Button, List } from "@arco-design/web-react";
+import { Button, List } from "@arco-design/web-react/lib";
 import "@arco-design/web-react/dist/css/arco.css"
 
 
