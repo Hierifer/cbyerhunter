@@ -5,51 +5,68 @@ import {
   SpriteComponent,
   Physics2DComponent,
 } from "@/modules/hex-engine/scene/Component";
+import { Prefab } from "@/modules/hex-engine/scene/Prefab";
 
 type Status = "pending" | "ready";
-abstract class Prefab {
-  label = "";
-  constructor(label: string) {
-    this.label = label;
-  }
-  abstract generate(...args: any): GameObject | undefined;
-}
 
 export class Fruit extends Prefab {
   label = "Fruit";
   src = "https://pixijs.com/assets/bunny.png";
   components = [];
-  sprite: Sprite;
-  box: Matter.Body;
+  sprite: Sprite | undefined;
   status: Status = "pending";
+  waitingList: Array<() => Promise<GameObject | void>>;
   constructor(label: string, { src, size }: { src?: string; size: number }) {
     super(label);
-    Promise.resolve().then(async () => {
-      const texture = await Assets.load(src ?? this.src);
 
-      // Create a new Sprite from an image path.
-      this.sprite = new Sprite(texture);
-      //this.sprite.resize(size, size);
+    this.waitingList = [];
+    Promise.resolve()
+      .then(async () => {
+        const texture = await Assets.load(src ?? this.src);
 
-      // Center the sprite's anchor point.
-      this.sprite.anchor.set(0.5);
-      this.status = "ready";
-    });
+        // Create a new Sprite from an image path.
+        this.sprite = new Sprite(texture);
+
+        this.status = "ready";
+      })
+      .then(() => {
+        this.waitingList.forEach((genTask) => {
+          genTask();
+        });
+      });
 
     // 设置 physics
   }
 
+  /**
+   * 异步生成对象
+   * @param param0
+   * @returns
+   */
   generate({ x, y }: { x: number; y: number }) {
-    if (this.status === "ready") {
-      this.box = Matter.Bodies.circle(x, y, 20, {}, 16);
-      return new GameObject(
-        { posX: x, posY: y },
-        { width: this.sprite.width, height: this.sprite.height }
-      ).addComponents([
-        new SpriteComponent(this.sprite),
-        new Physics2DComponent(this.box),
-      ]);
-    }
+    return new Promise<GameObject>((resolve) => {
+      if (this.status === "ready" && this.sprite) {
+        const box = Matter.Bodies.circle(x, y, 20, {}, 16);
+        this.sprite.position.set(x, y);
+        // Center the sprite's anchor point.
+        this.sprite.anchor.set(0.5);
+
+        resolve(
+          new GameObject(
+            "fruit",
+            { posX: x, posY: y },
+            { width: this.sprite!.width, height: this.sprite!.height }
+          ).addComponents([
+            new SpriteComponent(this.sprite),
+            new Physics2DComponent(box),
+          ])
+        );
+      } else {
+        this.waitingList.push(() =>
+          this.generate({ x, y }).then((res) => resolve(res))
+        );
+      }
+    });
   }
 }
 
