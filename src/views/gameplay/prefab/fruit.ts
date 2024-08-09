@@ -15,6 +15,7 @@ export class Fruit extends Prefab {
   components = [];
   sprite: Sprite | undefined;
   status: Status = "pending";
+  // @ts-expect-error: use it later
   texture: Texture;
   waitingList: Array<() => Promise<GameObject | void>>;
   constructor(label: string, { src, size }: { src?: string; size: number }) {
