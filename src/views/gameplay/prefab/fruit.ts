@@ -1,4 +1,4 @@
-import { Assets, Sprite } from "pixi.js";
+import { Assets, Sprite, Texture } from "pixi.js";
 import Matter from "matter-js";
 import { GameObject } from "@/modules/hex-engine/scene/GameObject";
 import {
@@ -15,6 +15,7 @@ export class Fruit extends Prefab {
   components = [];
   sprite: Sprite | undefined;
   status: Status = "pending";
+  texture: Texture;
   waitingList: Array<() => Promise<GameObject | void>>;
   constructor(label: string, { src, size }: { src?: string; size: number }) {
     super(label);
@@ -22,11 +23,7 @@ export class Fruit extends Prefab {
     this.waitingList = [];
     Promise.resolve()
       .then(async () => {
-        const texture = await Assets.load(src ?? this.src);
-
-        // Create a new Sprite from an image path.
-        this.sprite = new Sprite(texture);
-
+        this.texture = await Assets.load(src ?? this.src);
         this.status = "ready";
       })
       .then(() => {
@@ -45,7 +42,9 @@ export class Fruit extends Prefab {
    */
   generate({ x, y }: { x: number; y: number }) {
     return new Promise<GameObject>((resolve) => {
-      if (this.status === "ready" && this.sprite) {
+      if (this.status === "ready" && this.texture) {
+        // Create a new Sprite from an image path.
+        this.sprite = new Sprite(this.texture);
         const box = Matter.Bodies.circle(x, y, 20, {}, 16);
         this.sprite.position.set(x, y);
         // Center the sprite's anchor point.

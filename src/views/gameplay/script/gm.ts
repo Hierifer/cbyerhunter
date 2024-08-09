@@ -5,7 +5,7 @@ import { GeometryPrefab } from "@/modules/hex-engine/scene/Prefab";
 import GameGenerator from "@/modules/hex-engine/game/index";
 
 const FruitPrefab = new Fruit("bunny", { size: 1 });
-const WallPrefab = new GeometryPrefab("wall", { width: 100, height: 100 });
+const WallPrefab = new GeometryPrefab("wall", { width: 1000, height: 100 });
 
 export const onStart = (gameManager: GameGenerator) => {
   // 生成测试球
@@ -24,17 +24,37 @@ export const onStart = (gameManager: GameGenerator) => {
     }
   }
   WallPrefab.generate({
-    x: 100,
-    y: 200,
+    x: 500,
+    y: 500,
   }).then((wall) => {
     gameManager.add2GameManager(wall);
   });
 
-  // const g = new Graphics();
-  // g.rect(0, 0, width, height);
-  // g.fill(0xde3249);
+  const HitAreaPrefab = new GeometryPrefab("hitArea", {
+    width: gameManager.size.width,
+    height: 200,
+    onClick: (event) => {
+      //   console.log(event);
+      FruitPrefab.generate({
+        x: event.global.x,
+        y: event.global.y,
+      }).then((go) => {
+        gameManager.add2GameManager(go);
+      });
+    },
+    background: "transparent",
+  });
+  // 生成生成区
+  HitAreaPrefab.generate({
+    x: gameManager.size.width / 2,
+    y: 200 / 2,
+  }).then((wall) => {
+    gameManager.add2GameManager(wall);
+  });
 
-  // this.app.stage.addChild(g);
+  //   const app = gameManager.app;
+  //   app.stage.eventMode = "static";
+  //   app.stage.hitArea = app.screen;
 };
 
 export const onUpdate = () => {};
