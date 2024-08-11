@@ -4,6 +4,7 @@ import { GameObject } from "@/modules/hex-engine/scene/GameObject";
 import {
   SpriteComponent,
   Physics2DComponent,
+  Physics2DColliderComponent,
 } from "@/modules/hex-engine/scene/Component";
 import { Prefab } from "@/modules/hex-engine/scene/Prefab";
 
@@ -17,10 +18,11 @@ export class Fruit extends Prefab {
   status: Status = "pending";
   // @ts-expect-error: use it later
   texture: Texture;
+  size: number;
   waitingList: Array<() => Promise<GameObject | void>>;
   constructor(label: string, { src, size }: { src?: string; size: number }) {
     super(label);
-
+    this.size = size;
     this.waitingList = [];
     Promise.resolve()
       .then(async () => {
@@ -59,6 +61,7 @@ export class Fruit extends Prefab {
           ).addComponents([
             new SpriteComponent(this.sprite),
             new Physics2DComponent(box),
+            new Physics2DColliderComponent("fruit", box),
           ])
         );
       } else {
