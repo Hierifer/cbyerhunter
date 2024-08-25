@@ -5,23 +5,38 @@ import { GeometryPrefab } from "@/modules/hex-engine/scene/Prefab";
 import GameGenerator from "@/modules/hex-engine/game/index";
 
 // 全部水果
-const ALL_FRUITS = [
-  { name: "cherry", src: "", size: 1 },
-  { name: "strawberry", src: "", size: 2 },
-  { name: "grasp", src: "", size: 4 },
-  { name: "dragonFruit", src: "", size: 12 },
-  { name: "watermelon", src: "", size: 24 },
-];
+export const FruitBucket = {
+  cherry: { name: "cherry", src: "cherry.png", size: 24, next: "strawberry" },
+  strawberry: {
+    name: "strawberry",
+    src: "strawberry.png",
+    size: 48,
+    next: "grasp",
+  },
+  grasp: { name: "grasp", src: "grasp.png", size: 96, next: "dragonFruit" },
+  dragonFruit: {
+    name: "dragonFruit",
+    src: "dragonFruit.png",
+    size: 192,
+    next: "watermelon",
+  },
+  watermelon: {
+    name: "watermelon",
+    src: "watermelon.png",
+    size: 384,
+    next: "watermelon",
+  },
+};
 
 /**
  * 随机生成一个水果
  */
-const randomFruit = () => {
-  return ALL_FRUITS[Math.floor(Math.random() * ALL_FRUITS.length)];
-};
+// const randomFruit = () => {
+//   return ALL_FRUITS[Math.floor(Math.random() * ALL_FRUITS.length)];
+// };
 
 // 下一个水果
-const nextFruit = randomFruit();
+//const nextFruit = randomFruit();
 
 // TO-DO
 const followCursor = () => {
@@ -49,7 +64,7 @@ export const onPrepare = async (gameManager: GameGenerator) => {
   // preload sprite
   // prepare Prefab
 
-  FruitPrefab = new Fruit("bunny", { size: 1 });
+  FruitPrefab = new Fruit("cherry", { size: 1 });
   GroundPrefab = new GeometryPrefab("ground", { width, height: 100 });
   WallPrefab = new GeometryPrefab("wall", { width: 100, height });
 
@@ -61,13 +76,14 @@ export const onPrepare = async (gameManager: GameGenerator) => {
         FruitPrefab.generate({
           x: event.global.x,
           y: event.global.y,
+          size: FruitBucket.cherry.size,
+          label: "cherry",
         }).then((go) => {
           gameManager.add2GameManager(go);
-          gameManager.addCollisionListener("fruit", go);
         });
     },
-    onPointerout: (event) => {
-      console.log(event);
+    onPointerout: () => {
+      //console.log(event);
     },
     background: "transparent",
   });
@@ -78,38 +94,68 @@ export const onStart = (gameManager: GameGenerator) => {
 
   // 生成测试球
   const MAX = 1;
-  const MAXY = 1;
+  const MAXY = 4;
 
   gameManager.createCollisionDetector("fruit", (collisions) => {
     collisions.forEach((collision) => {
-      //如果碰撞干掉两对象
-      const { bodyA, bodyB } = collision.nnid;
-      console.log("detect " + bodyA + bodyB);
-      gameManager.removeGameObject(bodyA);
-      gameManager.removeGameObject(bodyB);
+      const nnids = collision.nnid;
+      const { bodyA, bodyB } = collision.data;
+      const gameObjectA = gameManager.getGameObjectByPhysicsBodyId(bodyA.id);
+      const gameObjectB = gameManager.getGameObjectByPhysicsBodyId(bodyB.id);
+
+      const isSameType = gameObjectA?.label === gameObjectB?.label;
+
+      if (isSameType) {
+        const curFruit = FruitBucket[gameObjectA?.label];
+        const next = FruitBucket[curFruit.next];
+
+        //如果碰撞干掉两对象
+        const [x, y] = [
+          (bodyA.position.x + bodyB.position.x) / 2,
+          (bodyA.position.y + bodyB.position.y) / 2,
+        ];
+        const size =
+          (bodyA.circleRadius ?? 20) + (bodyB.circleRadius ?? 20) / 2;
+        gameManager.removeGameObject(nnids.bodyA);
+        gameManager.removeGameObject(nnids.bodyB);
+
+        FruitPrefab &&
+          FruitPrefab.generate({
+            x,
+            y,
+            size: next.size,
+            label: next.name,
+          }).then((go) => {
+            gameManager.add2GameManager(go);
+          });
+      }
     });
   });
 
-  //   for (let i = 0; i < MAX; i++) {
-  //     for (let c = 0; c < MAXY; c++) {
-  //       // Move the sprite to the center of the screen.
-  FruitPrefab &&
-    FruitPrefab.generate({
-      x: 100,
-      y: 100,
-    }).then((go) => {
-      gameManager.add2GameManager(go);
-      gameManager.addCollisionListener("fruit", go);
-    });
+  for (let i = 0; i < MAX; i++) {
+    for (let c = 0; c < MAXY; c++) {
+      // Move the sprite to the center of the screen.
+      FruitPrefab &&
+        FruitPrefab.generate({
+          x: 100,
+          y: 100,
+          size: FruitBucket.cherry.size,
+          label: "cherry",
+        }).then((go) => {
+          gameManager.add2GameManager(go);
+        });
+    }
+  }
 
   setTimeout(() => {
     FruitPrefab &&
       FruitPrefab.generate({
         x: 100,
         y: 100,
+        size: FruitBucket.cherry.size,
+        label: "cherry",
       }).then((go) => {
         gameManager.add2GameManager(go);
-        gameManager.addCollisionListener("fruit", go);
       });
   }, 2000);
   //     }
@@ -149,4 +195,6 @@ export const onStart = (gameManager: GameGenerator) => {
   }
 };
 
-export const onUpdate = () => {};
+export const onUpdate = () => {
+  // Reach Maxinum line, end game
+};
