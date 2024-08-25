@@ -106,7 +106,9 @@ export const onStart = (gameManager: GameGenerator) => {
       const isSameType = gameObjectA?.label === gameObjectB?.label;
 
       if (isSameType) {
+        // @ts-expect-error check here
         const curFruit = FruitBucket[gameObjectA?.label];
+        // @ts-expect-error check here
         const next = FruitBucket[curFruit.next];
 
         //如果碰撞干掉两对象

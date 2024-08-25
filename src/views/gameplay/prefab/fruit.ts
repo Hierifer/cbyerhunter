@@ -34,6 +34,7 @@ export class Fruit extends Prefab {
           Object.entries(FruitBucket).map(async (k, v) => {
             //console.log(that);
             return Promise.resolve().then(async () => {
+              // @ts-expect-error check here
               this.texture.set(k[0], await Assets.load(k[1].src));
             });
           })
@@ -78,7 +79,7 @@ export class Fruit extends Prefab {
         this.sprite.position.set(x, y);
         // Center the sprite's anchor point.
         this.sprite.anchor.set(0.5);
-        this.sprite.setSize(size * 2 || DEFAULT_SIZE);
+        this.sprite.setSize((size ?? 12) * 2 || DEFAULT_SIZE);
 
         resolve(
           new GameObject(
