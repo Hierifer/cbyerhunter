@@ -4,5 +4,6 @@ module.exports = {
       "error",
       { "ts-ignore": "allow-with-description" },
     ],
+    "@typescript-eslint/ban-types": "off",
   },
 };

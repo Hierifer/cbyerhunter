@@ -191,6 +191,7 @@ export const onStart = (gameManager: GameGenerator) => {
     HitAreaPrefab.generate({
       x: gameManager.size.width / 2,
       y: 200 / 2,
+      hasPhysics: false,
     }).then((wall) => {
       gameManager.add2GameManager(wall);
     });

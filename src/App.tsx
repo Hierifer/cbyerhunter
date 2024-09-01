@@ -9,7 +9,7 @@ import NotFound from './views/NotFound'
 const App = () => {
   return (
     <Router>
-      <Nav />
+      {/* <Nav /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

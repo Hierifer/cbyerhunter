@@ -9,10 +9,11 @@ import "@arco-design/web-react/dist/css/arco.css"
 
 // singleton 不要放在渲染函数里。在组件被刷新时会被刷新
 const SGG = Singleton(GameGenerator)
+let gg: GameGenerator
 
 const Home = () => {
-  let gmObj: GameGenerator
-  const [debugMode, setDebugMode] = useState(false)
+  const [debugMode, setDebugMode] = useState(true)
+  const [debugSignal, setDebugSignal] = useState(1)
   
 
   useEffect(() => {
@@ -20,20 +21,35 @@ const Home = () => {
   }, [])
 
   function DebugPanel(){
-      return debugMode?(
-        <div>
-          <div id="debugObject"></div>
+    if(gg ){
+      console.log(gg)
+    }
+      
+    return debugMode?(
+      <div style={{ backgroundColor: "lightblue"}}>
+        <div id="debugObject">
+          <List>
+            {
+              gg && gg.getDebugGameObjects().map((item) => {
+
+                return (<List.Item key={item.id}>
+                  { JSON.stringify(item.getDebugObject()) }
+                </List.Item>)
+              })
+            }
+          </List>
         </div>
-      ) : null
+      </div>
+    ) : null
   }
 
   function init(){
-    const tmp = new SGG({
-      target: 'ggTarget'
+    gg = new SGG({
+      target: 'ggTarget',
+      options: {
+        debugSignal: setDebugSignal
+      }
     })
-    if(Object.keys(tmp).length > 0){
-      gmObj = tmp
-    }
   }
 
   function onRender(id: string, phase: string, actualDuration: number, baseDuration: number, startTime: number, commitTime: number) {
@@ -43,7 +59,7 @@ const Home = () => {
   return (
     <React.Fragment>
       <React.Profiler id="homepage" onRender={onRender}>
-        <div className="absolute h-full">
+        <div className="absolute h-full z-10">
           <div className="absolute bottom-0">
             <Button type="primary"  onClick={() => { setDebugMode(!debugMode) }} > Debug {debugMode? 'ON' : 'OFF'}</Button>
           </div>
@@ -52,7 +68,6 @@ const Home = () => {
         <main id='ggTarget' className="relative">
         </main>
       </React.Profiler>
-
     </React.Fragment>
   );
 };
