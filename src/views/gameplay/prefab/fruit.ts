@@ -22,6 +22,7 @@ export class Fruit extends Prefab {
     Texture
   >();
   size: number;
+  prefab = 'Fruit';
   waitingList: Array<() => Promise<GameObject | void>>;
   constructor(label: string, { src, size }: { src?: string; size: number }) {
     super(label);
@@ -73,10 +74,10 @@ export class Fruit extends Prefab {
       if (this.status === "ready" && this.texture) {
         // Create a new Sprite from an image path.
 
-        //console.log(label, size);
         this.sprite = new Sprite(this.texture.get(label ?? "cherry"));
         const box = Matter.Bodies.circle(x, y, size || DEFAULT_SIZE, {}, 16);
         this.sprite.position.set(x, y);
+        
         // Center the sprite's anchor point.
         this.sprite.anchor.set(0.5);
         this.sprite.setSize((size ?? 12) * 2 || DEFAULT_SIZE);
@@ -85,7 +86,8 @@ export class Fruit extends Prefab {
           new GameObject(
             label ?? "cherry",
             { posX: x, posY: y },
-            { width: this.sprite!.width, height: this.sprite!.height }
+            { width: this.sprite!.width, height: this.sprite!.height },
+            "fruit"
           ).addComponents([
             new SpriteComponent(this.sprite),
             new Physics2DComponent(box),

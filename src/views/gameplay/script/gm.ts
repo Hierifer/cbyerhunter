@@ -3,6 +3,9 @@
 import { Fruit } from "../prefab/fruit";
 import { GeometryPrefab } from "@/modules/hex-engine/scene/Prefab";
 import GameGenerator from "@/modules/hex-engine/game/index";
+import { intersect } from "@/modules/hex-engine/utils/math";
+import { GameObject } from '@/modules/hex-engine/scene/GameObject';
+import { Ticker } from "pixi.js";
 
 // 全部水果
 export const FruitBucket = {
@@ -50,6 +53,9 @@ const followCursor = () => {
   }
 };
 
+// hit area 参数
+const HIT_AREA_HEIGHT = 200
+
 let GroundPrefab: GeometryPrefab | undefined = undefined;
 let WallPrefab: GeometryPrefab | undefined = undefined;
 let HitAreaPrefab: GeometryPrefab | undefined = undefined;
@@ -70,7 +76,7 @@ export const onPrepare = async (gameManager: GameGenerator) => {
 
   HitAreaPrefab = new GeometryPrefab("hitArea", {
     width: gameManager.size.width,
-    height: 200,
+    height: HIT_AREA_HEIGHT,
     onClick: (event) => {
       FruitPrefab &&
         FruitPrefab.generate({
@@ -190,7 +196,7 @@ export const onStart = (gameManager: GameGenerator) => {
     // 生成生成区
     HitAreaPrefab.generate({
       x: gameManager.size.width / 2,
-      y: 200 / 2,
+      y: HIT_AREA_HEIGHT / 2,
       hasPhysics: false,
     }).then((wall) => {
       gameManager.add2GameManager(wall);
@@ -198,6 +204,37 @@ export const onStart = (gameManager: GameGenerator) => {
   }
 };
 
-export const onUpdate = () => {
-  // Reach Maxinum line, end game
-};
+let lastOverpass: GameObject[] = []
+const endCheck = (gameManager: GameGenerator) => {
+  // for everything is fruit
+  const curOverpass = gameManager.getGameObjectByPrefab('fruit').filter((g) =>{
+    return g.getGeoTop() < HIT_AREA_HEIGHT
+  })
+  const sameOverpass = intersect(lastOverpass, curOverpass, {oget: (go) => go.id})
+  lastOverpass = curOverpass
+  
+  return sameOverpass.some(([l, c]) => {
+    console.log("found", l.geo, c.geo, GameObject.quick_distance(l,c))
+
+    return GameObject.quick_distance(l,c) < 1
+  })
+}
+
+let lastGameCheck = 0
+export const onUpdate = (gameManager: GameGenerator, time?: Ticker) => {
+  //Reach Maxinum line, end game
+  if(time){
+    const curGameCheck = Math.floor(time.lastTime / 500)
+    if(lastGameCheck !== curGameCheck){
+      console.log(curGameCheck, ' checked')
+      if(endCheck(gameManager)){
+        // call game end
+    
+        console.log("OK")
+        gameManager.stop()
+        gameManager.sendSignal('game-over', {})
+      }
+      lastGameCheck = curGameCheck
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Editor = () => {
+const Editor = ({}) => {
     return (
         <React.Fragment>
             <div className="editor">
@@ -9,7 +9,6 @@ const Editor = () => {
                         <h1>Editor</h1>
                     </div>
                     <div className="editor__container__content">
-                        <textarea className="editor__container__content__textarea" placeholder="Write your code here..." />
                     </div>
                 </div>
             </div>
