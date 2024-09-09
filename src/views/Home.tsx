@@ -5,7 +5,7 @@ import GameGenerator from '@/modules/hex-engine/game';
 import Singleton from '@/modules/hex-engine/utils/singleton'
 import { Button, List, Modal } from "@arco-design/web-react/lib";
 import "@arco-design/web-react/dist/css/arco.css"
-import Editor from '@/modules/matrix-editor/layouts/Editor';
+// import Editor from '@/modules/matrix-editor/layouts/Editor';
 
 
 // singleton 不要放在渲染函数里。在组件被刷新时会被刷新

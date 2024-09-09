@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import Nav from './components/Nav'
 import Home from './views/Home'
-import About from './modules/matrix-editor/pages/About'
+import About from './views/About'
 import NotFound from './views/NotFound'
 
 const App = () => {
