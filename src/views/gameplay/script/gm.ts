@@ -1,11 +1,15 @@
 // import { Graphics } from "pixi.js";
 
 import { Fruit } from "../prefab/fruit";
+import { Playboy } from "../prefab/playboy";
 import { GeometryPrefab } from "@/modules/hex-engine/scene/Prefab";
 import GameGenerator from "@/modules/hex-engine/game/index";
 import { intersect } from "@/modules/hex-engine/utils/math";
-import { GameObject } from '@/modules/hex-engine/scene/GameObject';
+import { GameObject } from "@/modules/hex-engine/scene/GameObject";
 import { Ticker } from "pixi.js";
+import Controller from "./playController";
+import { SpineAnimatorComponent } from "@/modules/hex-engine/scene/Component";
+import Matter from "matter-js";
 
 // 全部水果
 export const FruitBucket = {
@@ -31,16 +35,6 @@ export const FruitBucket = {
   },
 };
 
-/**
- * 随机生成一个水果
- */
-// const randomFruit = () => {
-//   return ALL_FRUITS[Math.floor(Math.random() * ALL_FRUITS.length)];
-// };
-
-// 下一个水果
-//const nextFruit = randomFruit();
-
 // TO-DO
 const followCursor = () => {
   const indicator = null;
@@ -54,12 +48,15 @@ const followCursor = () => {
 };
 
 // hit area 参数
-const HIT_AREA_HEIGHT = 200
+const HIT_AREA_HEIGHT = 200;
 
 let GroundPrefab: GeometryPrefab | undefined = undefined;
 let WallPrefab: GeometryPrefab | undefined = undefined;
 let HitAreaPrefab: GeometryPrefab | undefined = undefined;
-let FruitPrefab: Fruit | undefined = undefined;
+let FruitPrefab = new Fruit("cherry", { size: 1 });
+let PlayboyPrefab: Playboy | undefined = undefined;
+const controller = new Controller();
+let player: GameObject | undefined = undefined;
 
 /**
  * 同步函数，注意会阻塞游戏进行。在期间会放置加载动画。请放置必要且轻量的逻辑
@@ -69,8 +66,7 @@ export const onPrepare = async (gameManager: GameGenerator) => {
   const { width, height } = gameManager.size;
   // preload sprite
   // prepare Prefab
-
-  FruitPrefab = new Fruit("cherry", { size: 1 });
+  PlayboyPrefab = new Playboy("playboy", { size: 1 });
   GroundPrefab = new GeometryPrefab("ground", { width, height: 100 });
   WallPrefab = new GeometryPrefab("wall", { width: 100, height });
 
@@ -100,7 +96,6 @@ export const onStart = (gameManager: GameGenerator) => {
 
   // 生成测试球
   const MAX = 1;
-  const MAXY = 4;
 
   gameManager.createCollisionDetector("fruit", (collisions) => {
     collisions.forEach((collision) => {
@@ -126,7 +121,6 @@ export const onStart = (gameManager: GameGenerator) => {
           (bodyA.circleRadius ?? 20) + (bodyB.circleRadius ?? 20) / 2;
         gameManager.removeGameObject(nnids.bodyA);
         gameManager.removeGameObject(nnids.bodyB);
-
         FruitPrefab &&
           FruitPrefab.generate({
             x,
@@ -141,21 +135,7 @@ export const onStart = (gameManager: GameGenerator) => {
   });
 
   for (let i = 0; i < MAX; i++) {
-    for (let c = 0; c < MAXY; c++) {
-      // Move the sprite to the center of the screen.
-      FruitPrefab &&
-        FruitPrefab.generate({
-          x: 100,
-          y: 100,
-          size: FruitBucket.cherry.size,
-          label: "cherry",
-        }).then((go) => {
-          gameManager.add2GameManager(go);
-        });
-    }
-  }
-
-  setTimeout(() => {
+    // Move the sprite to the center of the screen.
     FruitPrefab &&
       FruitPrefab.generate({
         x: 100,
@@ -165,9 +145,31 @@ export const onStart = (gameManager: GameGenerator) => {
       }).then((go) => {
         gameManager.add2GameManager(go);
       });
+  }
+
+  setTimeout(() => {
+    PlayboyPrefab &&
+      PlayboyPrefab.generate({
+        x: 300,
+        y: 100,
+        size: FruitBucket.cherry.size,
+        label: "playboy",
+      }).then((go) => {
+        gameManager.add2GameManager(go);
+        player = go;
+        player.phySetStatic(true);
+        const track = player
+          .getAnimator()
+          ?.spawn()
+          .then(() => {
+            //player?.phySetStatic(false);
+            player?.getAnimator()?.playAnimation({ name: "idle", loop: true });
+          });
+        setTimeout(() => {
+          player?.phySetStatic(false);
+        }, 100);
+      });
   }, 2000);
-  //     }
-  //   }
 
   if (WallPrefab) {
     WallPrefab.generate({
@@ -204,37 +206,122 @@ export const onStart = (gameManager: GameGenerator) => {
   }
 };
 
-let lastOverpass: GameObject[] = []
+let lastOverpass: GameObject[] = [];
 const endCheck = (gameManager: GameGenerator) => {
   // for everything is fruit
-  const curOverpass = gameManager.getGameObjectByPrefab('fruit').filter((g) =>{
-    return g.getGeoTop() < HIT_AREA_HEIGHT
-  })
-  const sameOverpass = intersect(lastOverpass, curOverpass, {oget: (go) => go.id})
-  lastOverpass = curOverpass
-  
+
+  const curOverpass = gameManager.getGameObjectByPrefab("fruit").filter((g) => {
+    return g.getGeoTop() < HIT_AREA_HEIGHT;
+  });
+
+  const sameOverpass = intersect(lastOverpass, curOverpass, {
+    oget: (go) => go.id,
+  });
+  lastOverpass = curOverpass;
+
   return sameOverpass.some(([l, c]) => {
-    console.log("found", l.geo, c.geo, GameObject.quick_distance(l,c))
+    // console.log("found", l.geo, c.geo, GameObject.quick_distance(l,c))
+    return GameObject.quick_distance(l, c) < 1;
+  });
+};
 
-    return GameObject.quick_distance(l,c) < 1
-  })
-}
+let lastGameCheck = 0;
 
-let lastGameCheck = 0
-export const onUpdate = (gameManager: GameGenerator, time?: Ticker) => {
-  //Reach Maxinum line, end game
-  if(time){
-    const curGameCheck = Math.floor(time.lastTime / 500)
-    if(lastGameCheck !== curGameCheck){
-      console.log(curGameCheck, ' checked')
-      if(endCheck(gameManager)){
-        // call game end
-    
-        console.log("OK")
-        gameManager.stop()
-        gameManager.sendSignal('game-over', {})
+// onUpdate 阻塞的
+export const onUpdate = async (gameManager: GameGenerator, time?: Ticker) => {
+  const spineBoy: SpineAnimatorComponent =
+    player?.getAnimator() as SpineAnimatorComponent;
+  if (spineBoy) {
+    //const spineBoy = gameManager.getGameObjectByLabel("playboy")[0] as GameObject;
+    // Update character's state based on the controller's input.
+    spineBoy.state.walk =
+      controller.keys.left.pressed || controller.keys.right.pressed;
+    if (spineBoy.state.run && spineBoy.state.walk) {
+      spineBoy.state.run = true;
+    } else {
+      spineBoy.state.run =
+        controller.keys.left.doubleTap || controller.keys.right.doubleTap;
+      spineBoy.state.hover = controller.keys.down.pressed;
+    }
+
+    if (controller.keys.left.pressed) spineBoy.direction = -1;
+    else if (controller.keys.right.pressed) spineBoy.direction = 1;
+    if (controller.keys.space.pressed) {
+      if (spineBoy.state.jump === false) {
+        spineBoy.state.jump = true;
+        spineBoy
+          .playAnimationAsync({ name: "jump", loop: false, timeScale: 1.5 })
+          .then(() => {
+            spineBoy.state.jump = false;
+          });
       }
-      lastGameCheck = curGameCheck
+    }
+
+    // Update character's animation based on the latest state.
+    spineBoy.update();
+  }
+  const pcomp = player?.getPhysics2DComponent();
+  const phybody = pcomp?.getBody();
+
+  if (player && phybody) {
+    const setVelocity = (velo: number) => {
+      Matter.Body.setVelocity(phybody, {
+        x: velo * spineBoy.direction,
+        y: phybody.velocity.y,
+      });
+    };
+
+    // Play the jump animation if not already playing.
+    if (spineBoy.state.jump) {
+      pcomp?.setLockY(true);
+
+      const { x, y } = spineBoy.spine.position;
+      // Matter.Body.setStatic(phybody, true);
+      let offset = 0;
+      const bone = spineBoy.spine.getBonePosition("front-foot");
+      if (bone) {
+        offset = bone.y / 4;
+      }
+      Matter.Body.setPosition(phybody, {
+        x,
+        y: y - spineBoy.spine.height / 2 + offset,
+      });
+      // console.log("phy body2", phybody.position);
+    } else {
+      pcomp?.setLockY(false);
+      // console.log("set not static");
+      // Matter.Body.setStatic(phybody, false);
+    }
+
+    // Handle the character animation based on the latest state and in the priority order.
+    if (spineBoy.state.hover) setVelocity(10);
+    else if (spineBoy.state.run) setVelocity(5);
+    else if (spineBoy.state.walk) setVelocity(2);
+    else if (
+      spineBoy.state.jump &&
+      (controller.keys.left.pressed || controller.keys.right.pressed)
+    ) {
+      setVelocity(2);
+    } else {
+      setVelocity(0);
     }
   }
-}
+
+  //Reach Maxinum line, end game
+  // if (time && time.lastTime > 1000) {
+  //   const curGameCheck = Math.floor(time.lastTime / 1000);
+  //   if (lastGameCheck !== curGameCheck) {
+  //     //console.log(time.lastTime, 'check')
+
+  //     if (endCheck(gameManager)) {
+  //       // call game end
+  //       time.stop();
+  //       gameManager.stop();
+  //       gameManager.sendSignal("game-over", {});
+  //     }
+  //     lastGameCheck = curGameCheck;
+  //   }
+  // }
+};
+
+export const onAsycUpdate = () => {};

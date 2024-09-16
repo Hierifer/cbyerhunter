@@ -46,6 +46,7 @@ export class Fruit extends Prefab {
         this.waitingList.forEach((genTask) => {
           genTask();
         });
+        this.waitingList = []
       });
 
     // 设置 physics
@@ -70,17 +71,16 @@ export class Fruit extends Prefab {
     label?: keyof typeof FruitBucket;
   }) {
     return new Promise<GameObject>((resolve) => {
-      const DEFAULT_SIZE = 30;
+      const DEFAULT_SIZE = 24;
       if (this.status === "ready" && this.texture) {
         // Create a new Sprite from an image path.
-
         this.sprite = new Sprite(this.texture.get(label ?? "cherry"));
         const box = Matter.Bodies.circle(x, y, size || DEFAULT_SIZE, {}, 16);
         this.sprite.position.set(x, y);
         
         // Center the sprite's anchor point.
         this.sprite.anchor.set(0.5);
-        this.sprite.setSize((size ?? 12) * 2 || DEFAULT_SIZE);
+        this.sprite.setSize((size ?? (DEFAULT_SIZE)) * 2);
 
         resolve(
           new GameObject(
@@ -96,7 +96,7 @@ export class Fruit extends Prefab {
         );
       } else {
         this.waitingList.push(() =>
-          this.generate({ x, y }).then((res) => resolve(res))
+          this.generate({ x, y, size, label, space }).then((res) => resolve(res))
         );
       }
     });

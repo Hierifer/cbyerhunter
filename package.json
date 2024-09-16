@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@arco-design/web-react": "^2.63.0",
+    "@pixi/spine-pixi": "^2.0.4",
     "@reduxjs/toolkit": "^1.9.7",
     "@types/matter-js": "^0.19.7",
     "es-toolkit": "^1.13.1",

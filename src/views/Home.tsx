@@ -83,6 +83,7 @@ const Home = () => {
         <div className="absolute h-full z-10">
           <div className="absolute bottom-0">
             <Button onClick={() => gg.restart()}>重新开始</Button>
+            <Button onClick={() => gg.debugPhysics()}>打开物理</Button>
             <Button type="primary"  onClick={() => { setDebugMode(!debugMode) }} > Debug {debugMode? 'ON' : 'OFF'}</Button>
           </div>
           <DebugPanel />
