@@ -8,7 +8,10 @@ import { intersect } from "@/modules/hex-engine/utils/math";
 import { GameObject } from "@/modules/hex-engine/scene/GameObject";
 import { Ticker } from "pixi.js";
 import Controller from "./playController";
-import { SpineAnimatorComponent } from "@/modules/hex-engine/scene/Component";
+import {
+  SpineAnimatorComponent,
+  AudioComponent,
+} from "@/modules/hex-engine/scene/Component";
 import Matter from "matter-js";
 
 // 全部水果
@@ -158,6 +161,8 @@ export const onStart = (gameManager: GameGenerator) => {
         gameManager.add2GameManager(go);
         player = go;
         player.phySetStatic(true);
+        const audio = player.findComponent("audio") as AudioComponent;
+        audio.play("spawn");
         const track = player
           .getAnimator()
           ?.spawn()
@@ -276,7 +281,6 @@ export const onUpdate = async (gameManager: GameGenerator, time?: Ticker) => {
       pcomp?.setLockY(true);
 
       const { x, y } = spineBoy.spine.position;
-      // Matter.Body.setStatic(phybody, true);
       let offset = 0;
       const bone = spineBoy.spine.getBonePosition("front-foot");
       if (bone) {
@@ -286,11 +290,8 @@ export const onUpdate = async (gameManager: GameGenerator, time?: Ticker) => {
         x,
         y: y - spineBoy.spine.height / 2 + offset,
       });
-      // console.log("phy body2", phybody.position);
     } else {
       pcomp?.setLockY(false);
-      // console.log("set not static");
-      // Matter.Body.setStatic(phybody, false);
     }
 
     // Handle the character animation based on the latest state and in the priority order.
@@ -304,6 +305,12 @@ export const onUpdate = async (gameManager: GameGenerator, time?: Ticker) => {
       setVelocity(2);
     } else {
       setVelocity(0);
+    }
+
+    const audio = player.findComponent("audio") as AudioComponent;
+
+    if (audio) {
+      audioSM(audio, spineBoy.state);
     }
   }
 
@@ -322,6 +329,42 @@ export const onUpdate = async (gameManager: GameGenerator, time?: Ticker) => {
   //     lastGameCheck = curGameCheck;
   //   }
   // }
+};
+
+const audioSM = (
+  audio: AudioComponent,
+  state: SpineAnimatorComponent["state"]
+) => {
+  if (state.hover) {
+    audio.pause("walk");
+    audio.pause("running");
+    audio.play("hover");
+    return;
+  } else {
+    audio.pause("hover");
+  }
+  if (state.jump) {
+    audio.pause("walk");
+    audio.pause("running");
+    audio.play("jump");
+    return;
+  } else {
+    audio.pause("jump");
+  }
+  if (state.run) {
+    audio.pause("walk");
+    audio.play("running");
+    return;
+  } else {
+    audio.pause("running");
+  }
+  if (state.walk) {
+    audio.pause("running");
+    audio.play("walk");
+    return;
+  } else {
+    audio.pause("walk");
+  }
 };
 
 export const onAsycUpdate = () => {};

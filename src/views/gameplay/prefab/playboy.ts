@@ -6,12 +6,21 @@ import {
   Physics2DComponent,
   Physics2DColliderComponent,
   SpineAnimatorComponent,
+  AudioComponent,
 } from "@/modules/hex-engine/scene/Component";
 import { Prefab } from "@/modules/hex-engine/scene/Prefab";
 import { Spine } from "@pixi/spine-pixi";
 
 type Status = "pending" | "ready";
 
+const AUDIOS_SOURCE = {
+  walk: { src: "public/audio/walking.mp3", rate: 0.6 },
+  hover: { src: "public/audio/jump.mp3", rate: 1 },
+  //hitFruit: { src: "public/audio/hitFruit.mp3", rate: 1 },
+  jump: { src: "public/audio/hover.mp3", rate: 1 },
+  running: { src: "public/audio/walking.mp3", rate: 1 },
+  spawn: { src: "public/audio/spawn.mp3", rate: 1 },
+};
 export class Playboy extends Prefab {
   label = "playboy";
   components = [];
@@ -32,11 +41,11 @@ export class Playboy extends Prefab {
           await Assets.load([
             {
               alias: "spineSkeleton",
-              src: "https://raw.githubusercontent.com/pixijs/spine-v8/main/examples/assets/spineboy-pro.skel",
+              src: "public/spine/spineboy-pro.skel",
             },
             {
               alias: "spineAtlas",
-              src: "https://raw.githubusercontent.com/pixijs/spine-v8/main/examples/assets/spineboy-pma.atlas",
+              src: "public/spine/spineboy-pma.atlas",
             },
           ]);
           this.status = "ready";
@@ -99,6 +108,7 @@ export class Playboy extends Prefab {
             new Physics2DComponent(box),
             new Physics2DColliderComponent(space || "playboy", box),
             new SpineAnimatorComponent(this.spine),
+            new AudioComponent(AUDIOS_SOURCE),
           ])
         );
       } else {
