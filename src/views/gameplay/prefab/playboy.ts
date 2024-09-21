@@ -14,12 +14,11 @@ import { Spine } from "@pixi/spine-pixi";
 type Status = "pending" | "ready";
 
 const AUDIOS_SOURCE = {
-  walk: { src: "public/audio/walking.mp3", rate: 0.6 },
-  hover: { src: "public/audio/jump.mp3", rate: 1 },
-  //hitFruit: { src: "public/audio/hitFruit.mp3", rate: 1 },
-  jump: { src: "public/audio/hover.mp3", rate: 1 },
-  running: { src: "public/audio/walking.mp3", rate: 1 },
-  spawn: { src: "public/audio/spawn.mp3", rate: 1 },
+  walk: { src: "audio/walking.mp3", rate: 0.6 },
+  hover: { src: "audio/jump.mp3", rate: 1 },
+  jump: { src: "audio/hover.mp3", rate: 1 },
+  running: { src: "audio/walking.mp3", rate: 1 },
+  spawn: { src: "audio/spawn.mp3", rate: 1 },
 };
 export class Playboy extends Prefab {
   label = "playboy";
@@ -41,11 +40,11 @@ export class Playboy extends Prefab {
           await Assets.load([
             {
               alias: "spineSkeleton",
-              src: "public/spine/spineboy-pro.skel",
+              src: "spine/spineboy-pro.skel",
             },
             {
               alias: "spineAtlas",
-              src: "public/spine/spineboy-pma.atlas",
+              src: "spine/spineboy-pma.atlas",
             },
           ]);
           this.status = "ready";
