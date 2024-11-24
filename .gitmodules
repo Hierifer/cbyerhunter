@@ -1,6 +1,6 @@
 [submodule "src/modules/hex-engine"]
 	path = src/modules/hex-engine
-	url = https://github.com/Hierifer/hex-engine
+	url = https://github.com/neo-hex/hex-engine
 
 [submodule "src/modules/matrix-editor"]
 	path = src/modules/matrix-editor
